@@ -1,0 +1,22 @@
+from django.db import models
+from django.utils import timezone
+
+class Author(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(null=True, blank=True, max_length=100)
+    email = models.EmailField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.id:
+            self.updated_at = timezone.now()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        ordering = ['-created_at', '-updated_at']
+
+    
